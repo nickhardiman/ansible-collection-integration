@@ -3,5 +3,6 @@
   files = [
     '''ansible\.cfg$''',
     '''defaults/main\.yml$''',
+    '''roles/elk_server/files/logstash\.yml$''',
   ]
 
