@@ -1,16 +1,16 @@
 ---
 # https://www.elastic.co/guide/en/elasticsearch/reference/8.5/rpm.html
 
-- name: elasticsearch: install supporting packages
+- name: "elasticsearch: install supporting packages"
   yum:
     name: python3-libsemanage
 
-- name: elasticsearch: Import the Elasticsearch GPG Key
+- name: "elasticsearch: Import the Elasticsearch GPG Key"
   ansible.builtin.rpm_key:
     state: present
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-- name: elasticsearch: copy yum repo file
+- name: "elasticsearch: copy yum repo file"
   ansible.builtin.copy:
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch.repo
@@ -18,7 +18,7 @@
     group: root
     mode: 0644
 
-- name: elasticsearch: install packages
+- name: "elasticsearch: install packages"
   ansible.builtin.dnf:
     name: 
     - elasticsearch
@@ -37,7 +37,7 @@
 # jvm.options       for configuring Elasticsearch JVM settings
 # log4j2.properties for configuring Elasticsearch logging
 
-- name: elasticsearch: copy config
+- name: "elasticsearch: copy config"
   ansible.builtin.copy:
     src: elasticsearch.yml
     dest: /etc/elasticsearch/elasticsearch.yml
@@ -46,7 +46,7 @@
     mode: 0660
   notify: restart service
 
-- name: elasticsearch: copy more config
+- name: "elasticsearch: copy more config"
   ansible.builtin.copy:
     src: "{{ item }}"
     dest: /etc/elasticsearch/jvm.options.d/
@@ -60,7 +60,7 @@
 
 
 # systemd
-- name: elasticsearch: start the daemon
+- name: "elasticsearch: start the daemon"
   ansible.builtin.systemd:
     name: "{{ app_systemd_unit }}"
     state: started
@@ -69,7 +69,7 @@
 
 # firewall
 # https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.2/html-single/red_hat_ansible_automation_platform_installation_guide/index#ref-access-control-requirements_planning
-- name: elasticsearch: permit service traffic
+- name: "elasticsearch: permit service traffic"
   ansible.posix.firewalld:
     service: "{{ item }}"
     immediate: yes
@@ -77,7 +77,7 @@
     state: enabled
   loop: "{{ app_fw_services }}"
 
-- name: elasticsearch: permit port traffic
+- name: "elasticsearch: permit port traffic"
   ansible.posix.firewalld:
     port: "{{ item }}"
     immediate: yes

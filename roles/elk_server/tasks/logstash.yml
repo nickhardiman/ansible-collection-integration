@@ -1,16 +1,16 @@
 ---
 # https://www.elastic.co/guide/en/logstash/8.5/installing-logstash.html
 
-- name: logstash: install supporting packages
+- name: "logstash: install supporting packages"
   yum:
     name: python3-libsemanage
 
-- name: logstash: import the Elastic GPG Key
+- name: "logstash: import the Elastic GPG Key"
   ansible.builtin.rpm_key:
     state: present
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-- name: logstash: copy yum repo file
+- name: "logstash: copy yum repo file"
   ansible.builtin.copy:
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch.repo
@@ -18,7 +18,7 @@
     group: root
     mode: 0644
 
-- name: logstash: install packages
+- name: "logstash: install packages"
   ansible.builtin.dnf:
     name: 
     - logstash
@@ -31,7 +31,7 @@
 
 
 # config
-- name: logstash: copy server config
+- name: "logstash: copy server config"
   ansible.builtin.copy:
     src: logstash.yml
     dest: /etc/logstash/
@@ -40,7 +40,7 @@
     mode: 0644
   notify: restart logstash
 
-- name: logstash: copy pipeline config
+- name: "logstash: copy pipeline config"
   ansible.builtin.copy:
     src: logstash-syslog.conf
     dest: /etc/logstash/conf.d/
@@ -51,7 +51,7 @@
 
 
 # systemd
-- name: logstash: start the daemon
+- name: "logstash: start the daemon"
   vars:
     app_systemd_unit: logstash
   ansible.builtin.systemd:

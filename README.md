@@ -1,3 +1,3 @@
-# Ansible Collection - nick.integration
+# Ansible Collection - nick.homelab
 
 Documentation for the collection.

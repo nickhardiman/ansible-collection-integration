@@ -1,16 +1,16 @@
 ---
 # https://www.elastic.co/guide/en/kibana/8.5/rpm.html
 
-- name: kibana: install supporting packages
+- name: "kibana: install supporting packages"
   yum:
     name: python3-libsemanage
 
-- name: kibana: Import the Elastic GPG Key
+- name: "kibana: Import the Elastic GPG Key"
   ansible.builtin.rpm_key:
     state: present
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
-- name: kibana: Copy yum repo file
+- name: "kibana: Copy yum repo file"
   ansible.builtin.copy:
     src: elasticsearch.repo
     dest: /etc/yum.repos.d/elasticsearch.repo
@@ -18,7 +18,7 @@
     group: root
     mode: 0644
 
-- name: kibana: install packages
+- name: "kibana: install packages"
   ansible.builtin.dnf:
     name: 
     - kibana
@@ -30,7 +30,7 @@
 
 
 # config
-- name: kibana: copy server config
+- name: "kibana: copy server config"
   vars:
     app_systemd_unit: kibana
   ansible.builtin.copy:
@@ -43,7 +43,7 @@
 
 
 # systemd
-- name: kibana: start the daemon
+- name: "kibana: start the daemon"
   vars:
     app_systemd_unit: kibana
   ansible.builtin.systemd:
@@ -52,7 +52,7 @@
     enabled: yes
 
 # firewall
-- name: kibana: permit service traffic
+- name: "kibana: permit service traffic"
   vars:
     app_fw_services:
     - kibana
